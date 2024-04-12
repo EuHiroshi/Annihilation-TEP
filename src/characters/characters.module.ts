@@ -14,4 +14,4 @@ import { Characters, CharactersSchema } from './schemas/character.schema';
   exports: [CharactersService],
   controllers: [CharactersController],
 })
-export class UsersModule {}
+export class CharactersModule {}
