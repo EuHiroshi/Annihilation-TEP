@@ -7,11 +7,11 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { charactersService } from './characters.service';
+import { CharactersService } from './characters.service';
 
 @Controller('character')
 export class CharactersController {
-  constructor(private readonly charactersService: CharactersController) {}
+  constructor(private readonly charactersService: CharactersService) {}
 
   @Post()
   create(@Body() createCharacter: object) {
