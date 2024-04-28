@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Utils } from 'src/utils/utils';
 import { Creators } from './schemas/creator.schema';
 import { UpdateCreatorDto } from './dto/update-creator.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
 export class CreatorsService implements OnModuleInit {
@@ -53,9 +54,9 @@ export class CreatorsService implements OnModuleInit {
     return findedCreators;
   }
 
-  async getComicsByCreators(id: string){
+  async getComicsByCreators(id: string) {
     const creator = await this.findOne(id);
-    
+
     return creator.comics;
   }
 

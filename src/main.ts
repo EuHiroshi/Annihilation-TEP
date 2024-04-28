@@ -9,10 +9,8 @@ async function bootstrap() {
     .setTitle('Marvel API')
     .setDescription('Annihilation (2006 - 2007)')
     .setVersion('1.0')
-    .addTag('annihilation')
     .build();
 
-  
   app.useGlobalPipes(new ValidationPipe());
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

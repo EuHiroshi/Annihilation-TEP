@@ -60,7 +60,7 @@ export class CharactersService implements OnModuleInit {
 
   async getUrlImg(id: string) {
     const character = await this.findOne(id);
-    const url = `${character.thumbnail}/standard_amazing.jpg`
+    const url = `${character.thumbnail}/standard_amazing.jpg`;
 
     return url;
   }
