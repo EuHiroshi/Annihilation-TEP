@@ -1,27 +1,64 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Characters } from './schemas/character.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
+import { Utils } from 'src/utils/utils';
+import { UpdateChardto } from './dto/update-char-dto';
 
 @Injectable()
-export class CharactersService {
+export class CharactersService implements OnModuleInit{
   constructor(
     @InjectModel(Characters.name) private charactersModel: Model<Characters>,
   ) {}
+  
+  async onModuleInit() {
+    const url = new Utils().createUrlFetch('characters');
+    const data = await fetch(url);
+    const json = await data.json();
+    
+    const charactersData = json.data.results.map(data => {
+      const character = {
+        "id": data.id,
+        "name": data.name,
+        "description":data.description,
+        "comics":data.comics.items,
+        "series":data.series.items,
+        "stories":data.stories.items,
+        "thumbnail":data.thumbnail.path
+      }
+
+      return character;
+    })
+
+    this.insertMany(charactersData);
+  }
 
   async create(createCharacter: object) {
     this.charactersModel.create(createCharacter);
   }
 
-  findOne(name: string) {
-    const findedCharacters = this.charactersModel.findOne({
-      name: name,
+  async insertMany(createCharacter: [object]){
+    this.charactersModel.insertMany(createCharacter);
+  }
+
+  async findOne(id: string) {
+    const findedCharacters = await this.charactersModel.findOne({
+      id: id,
     });
     return findedCharacters;
   }
 
-  findAll() {
-    const findedCharacters = this.charactersModel.find();
+  async findAll() {
+    const findedCharacters = await this.charactersModel.find();
     return findedCharacters;
+  }
+
+  async update(id: string, updateCharDto: UpdateChardto){
+    const updatedCharcters = await this.charactersModel.updateOne({"id": id}, updateCharDto);
+    return updatedCharcters;
+  }
+
+  delete(id: string){
+    this.charactersModel.deleteOne({"id": id});
   }
 }

@@ -5,9 +5,12 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { CharactersService } from './characters.service';
+import { ObjectId } from 'mongoose';
+import { UpdateChardto } from './dto/update-char-dto';
 
 @Controller('character')
 export class CharactersController {
@@ -30,5 +33,11 @@ export class CharactersController {
   @Get()
   findAll() {
     return this.charactersService.findAll();
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateCharDto: UpdateChardto) {
+    const updatedChar = this.charactersService.update(id, updateCharDto);
+    return updatedChar;
   }
 }

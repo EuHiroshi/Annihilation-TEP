@@ -6,19 +6,22 @@ export type CharactersDocument = HydratedDocument<Characters>;
 @Schema({ timestamps: true })
 export class Characters {
   @Prop({ required: true })
+  id: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop()
   description: string;
 
   @Prop({ required: true })
-  comics: object[];
+  comics: [object];
 
   @Prop({ required: true })
-  series: object[];
+  series: [object];
 
   @Prop({ required: true })
-  stories: object[];
+  stories: [object];
 
   @Prop({ required: true })
   thumbnail: string;
