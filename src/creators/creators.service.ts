@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { Utils } from 'src/utils/utils';
 import { Creators } from './schemas/creator.schema';
 import { UpdateCreatorDto } from './dto/update-creator.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
 export class CreatorsService implements OnModuleInit {
@@ -35,7 +34,8 @@ export class CreatorsService implements OnModuleInit {
   }
 
   async create(createCreator: object) {
-    this.creatorsModel.create(createCreator);
+    const createdCreator = this.creatorsModel.create(createCreator);
+    return createdCreator;
   }
 
   async insertMany(createCreator: [object]) {
@@ -61,9 +61,10 @@ export class CreatorsService implements OnModuleInit {
   }
 
   async update(id: string, updateCreatorDto: UpdateCreatorDto) {
-    const updatedCreator = await this.creatorsModel.updateOne(
+    const updatedCreator = await this.creatorsModel.findOneAndUpdate(
       { id: id },
       updateCreatorDto,
+      { new: true }
     );
     return updatedCreator;
   }

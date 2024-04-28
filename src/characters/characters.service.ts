@@ -9,7 +9,7 @@ import { UpdateChardto } from './dto/update-char-dto';
 export class CharactersService implements OnModuleInit {
   constructor(
     @InjectModel(Characters.name) private charactersModel: Model<Characters>,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     const url = new Utils().createUrlFetch('characters');
@@ -34,18 +34,12 @@ export class CharactersService implements OnModuleInit {
   }
 
   async create(createCharacter: object) {
-    this.charactersModel.create(createCharacter);
+    const createdChar = this.charactersModel.create(createCharacter);
+    return createdChar;
   }
 
   async insertMany(createCharacter: [object]) {
     this.charactersModel.insertMany(createCharacter);
-  }
-
-  async findOne(id: string) {
-    const findedCharacters = await this.charactersModel.findOne({
-      id: id,
-    });
-    return findedCharacters;
   }
 
   async findAll() {
@@ -53,9 +47,16 @@ export class CharactersService implements OnModuleInit {
     return findedCharacters;
   }
 
+  async findOne(id: string){
+    const findedCharacters = await this.charactersModel.findOne({
+      id: id,
+    });
+    return findedCharacters;
+  }
+
   async getComics(id: string) {
     const character = await this.findOne(id);
-    return character.comics;
+    return character.comics
   }
 
   async getUrlImg(id: string) {
@@ -66,9 +67,10 @@ export class CharactersService implements OnModuleInit {
   }
 
   async update(id: string, updateCharDto: UpdateChardto) {
-    const updatedCharacters = await this.charactersModel.updateOne(
+    const updatedCharacters = await this.charactersModel.findOneAndUpdate(
       { id: id },
       updateCharDto,
+      { new: true }
     );
     return updatedCharacters;
   }

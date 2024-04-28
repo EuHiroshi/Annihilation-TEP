@@ -31,7 +31,8 @@ export class ComicsService implements OnModuleInit {
   }
 
   async create(createComicDto: CreateComicDto) {
-    this.comicsModel.create(createComicDto);
+    const createdComic = this.comicsModel.create(createComicDto);
+    return createdComic;
   }
 
   async insertMany(createComics: [object]) {
@@ -64,9 +65,10 @@ export class ComicsService implements OnModuleInit {
   }
 
   async update(id: string, updateComicDto: UpdateComicDto) {
-    const updatedComic = await this.comicsModel.updateOne(
+    const updatedComic = await this.comicsModel.findOneAndUpdate(
       { id: id },
       updateComicDto,
+      { new: true }
     );
     return updatedComic;
   }
