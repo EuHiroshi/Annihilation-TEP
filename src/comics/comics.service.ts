@@ -1,26 +1,63 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateComicDto } from './dto/create-comic.dto';
 import { UpdateComicDto } from './dto/update-comic.dto';
+import { Utils } from 'src/utils/utils';
+import { InjectModel } from '@nestjs/mongoose';
+import { Comics } from './schemas/comic.schemas';
+import { Model } from 'mongoose';
 
 @Injectable()
-export class ComicsService {
-  create(createComicDto: CreateComicDto) {
-    return 'This action adds a new comic';
+export class ComicsService implements OnModuleInit {
+  constructor(
+    @InjectModel(Comics.name) private comicsModel: Model<Comics>,
+  ) { }
+
+  async onModuleInit() {
+    const url = new Utils().createUrlFetch('comics');
+    const data = await fetch(url);
+    const json = await data.json();
+
+    const comicsData = json.data.results.map(data => {
+      const comics = {
+        "id": data.id,
+        "title": data.title,
+        "characters": data.characters.items,
+        "creators": data.creators.items,
+        "thumbnail": data.thumbnail.path
+      }
+
+      return comics;
+    })
+
+    this.insertMany(comicsData);
   }
 
-  findAll() {
-    return `This action returns all comics`;
+  async create(createComicDto: CreateComicDto) {
+    this.comicsModel.create(createComicDto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comic`;
+  async insertMany(createComics: [object]) {
+    this.comicsModel.insertMany(createComics);
   }
 
-  update(id: number, updateComicDto: UpdateComicDto) {
-    return `This action updates a #${id} comic`;
+  async findAll() {
+    const findedComics = await this.comicsModel.find();
+    return findedComics;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comic`;
+  async findOne(id: string) {
+    const findedComic = await this.comicsModel.findOne({
+      id: id,
+    });
+    return findedComic;
+  }
+
+  async update(id: string, updateComicDto: UpdateComicDto) {
+    const updatedComic = await this.comicsModel.updateOne({ "id": id }, updateComicDto);
+    return updatedComic;
+  }
+
+  async delete(id: string) {
+    await this.comicsModel.findOneAndDelete({ "id": id });
   }
 }

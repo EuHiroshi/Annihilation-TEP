@@ -61,7 +61,7 @@ export class CreatorsService implements OnModuleInit {
     return updatedCreator;
   }
 
-  delete(id: string) {
-    this.creatorsModel.deleteOne({ id: id });
+  async delete(id: string) {
+    await this.creatorsModel.findOneAndDelete({ id: id });
   }
 }

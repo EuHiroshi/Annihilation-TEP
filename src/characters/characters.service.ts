@@ -61,7 +61,7 @@ export class CharactersService implements OnModuleInit {
     return updatedCharacters;
   }
 
-  delete(id: string) {
-    this.charactersModel.deleteOne({ id: id });
+  async delete(id: string) {
+    await this.charactersModel.findOneAndDelete({ id: id });
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -39,5 +40,10 @@ export class CharactersController {
   update(@Param('id') id: string, @Body() updateCharDto: UpdateChardto) {
     const updatedChar = this.charactersService.update(id, updateCharDto);
     return updatedChar;
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.charactersService.delete(id);
   }
 }

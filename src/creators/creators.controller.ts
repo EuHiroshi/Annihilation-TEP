@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -38,5 +39,10 @@ export class CreatorsController {
   update(@Param('id') id: string, @Body() updateCreatorDto: UpdateCreatorDto) {
     const updatedCreator = this.creatorsService.update(id, updateCreatorDto);
     return updatedCreator;
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    this.creatorsService.delete(id);
   }
 }
