@@ -1,4 +1,24 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCreatorDto } from './create-creator.dto';
+import { IsArray, IsString } from 'class-validator';
 
-export class UpdateCreatorDto extends PartialType(CreateCreatorDto) {}
+export class UpdateCreatorDto {
+  @IsString()
+  id: string;
+
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  fullName: string;
+
+  @IsArray()
+  comics: [object];
+
+  @IsArray()
+  series: [object];
+
+  @IsArray()
+  stories: [object];
+
+  @IsString()
+  thumbnail: string;
+}
