@@ -53,6 +53,12 @@ export class CreatorsService implements OnModuleInit {
     return findedCreators;
   }
 
+  async getComicsByCreators(id: string){
+    const creator = await this.findOne(id);
+    
+    return creator.comics;
+  }
+
   async update(id: string, updateCreatorDto: UpdateCreatorDto) {
     const updatedCreator = await this.creatorsModel.updateOne(
       { id: id },

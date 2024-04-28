@@ -22,10 +22,10 @@ export class CharactersController {
     return this.charactersService.create(createCharacter);
   }
 
-  @Get(':name')
-  findOne(@Param('name') name: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     try {
-      return this.charactersService.findOne(name);
+      return this.charactersService.findOne(id);
     } catch (error) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
@@ -34,6 +34,24 @@ export class CharactersController {
   @Get()
   findAll() {
     return this.charactersService.findAll();
+  }
+ 
+  @Get('/:id/comics')
+  getComics(@Param('id') id: string) {
+    try {
+      return this.charactersService.getComics(id);
+    } catch (error) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+  }
+
+  @Get('/:id/img')
+  getImgUrl(@Param('id') id: string) {
+    try {
+      return this.charactersService.getUrlImg(id);
+    } catch (error) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
   }
 
   @Patch(':id')

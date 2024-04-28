@@ -51,6 +51,20 @@ export class ComicsService implements OnModuleInit {
     });
     return findedComic;
   }
+  
+  async getCharacters(id: string) {
+    const comic = await this.findOne(id);
+    
+    return comic.characters;
+  }
+
+  async getUrlImg(id: string) {
+    const comic = await this.findOne(id);
+    const url = `${comic.thumbnail}/standard_amazing.jpg`
+
+    return url;
+  }
+
 
   async update(id: string, updateComicDto: UpdateComicDto) {
     const updatedComic = await this.comicsModel.updateOne({ "id": id }, updateComicDto);

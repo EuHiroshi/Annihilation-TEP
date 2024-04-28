@@ -21,10 +21,19 @@ export class CreatorsController {
     return this.creatorsService.create(createCreator);
   }
 
-  @Get(':name')
-  findOne(@Param('name') name: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     try {
-      return this.creatorsService.findOne(name);
+      return this.creatorsService.findOne(id);
+    } catch (error) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+  }
+
+  @Get('/:id/comics')
+  findComics(@Param('id') id: string) {
+    try {
+      return this.creatorsService.getComicsByCreators(id);
     } catch (error) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }

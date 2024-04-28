@@ -53,6 +53,18 @@ export class CharactersService implements OnModuleInit {
     return findedCharacters;
   }
 
+  async getComics(id: string) {
+    const character = await this.findOne(id);
+    return character.comics;
+  }
+
+  async getUrlImg(id: string) {
+    const character = await this.findOne(id);
+    const url = `${character.thumbnail}/standard_amazing.jpg`
+
+    return url;
+  }
+
   async update(id: string, updateCharDto: UpdateChardto) {
     const updatedCharacters = await this.charactersModel.updateOne(
       { id: id },
