@@ -11,12 +11,14 @@ import {
 } from '@nestjs/common';
 import { CreatorsService } from './creators.service';
 import { UpdateCreatorDto } from './dto/update-creator.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('creators')
 export class CreatorsController {
   constructor(private readonly creatorsService: CreatorsService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Criar usuário' })
   create(@Body() createCreator: object) {
     return this.creatorsService.create(createCreator);
   }
